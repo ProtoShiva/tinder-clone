@@ -2,7 +2,10 @@ import React from "react"
 import whiteLogo from "../images/tinder_logo_white.png"
 import colorLogo from "../images/color-logo-tinder.png"
 
-const Nav = ({ minimal }) => {
+const Nav = ({ minimal, authToken, setShowModal, showModal }) => {
+  const handleClick = () => {
+    setShowModal(true)
+  }
   return (
     <nav>
       <div className="logo-container">
@@ -12,6 +15,11 @@ const Nav = ({ minimal }) => {
           alt="tinder"
         />
       </div>
+      {!authToken && !minimal && (
+        <button className="nav-button" onClick={handleClick} disabled={showModal}>
+          Log in
+        </button>
+      )}
     </nav>
   )
 }
