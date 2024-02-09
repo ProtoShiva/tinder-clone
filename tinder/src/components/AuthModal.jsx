@@ -1,22 +1,34 @@
 import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const AuthModal = ({ setShowModal, isSignUp }) => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [confirmPassword, setConfirmPassword] = useState(null)
   const [error, setError] = useState(null)
+  let navigate = useNavigate()
   const handleClick = () => {
     setShowModal(false)
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       if (isSignUp && password !== confirmPassword) {
         setError("Password need to match")
+        return
       }
-      console.log("make post request to our db")
+      const response = await axios.post("http://localhost:3000/signup", {
+        email,
+        password
+      })
+
+      const success = response.status === 201
+      if (success) {
+        navigate("/onboarding")
+      }
     } catch (error) {
       console.log(error.message)
     }
@@ -48,7 +60,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
           name="password"
           placeholder="password"
           required
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
         {isSignUp && (
           <>
@@ -59,7 +71,7 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
               name="password-check"
               placeholder="confirm Password"
               required
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </>
         )}
