@@ -5,23 +5,23 @@ import ChatContainer from "../components/ChatContainer"
 
 const db = [
   {
-    name: "Richard Hendricks",
+    name: "himanshu",
     url: "https://media.assettype.com/filmcompanion%2F2023-10%2Fc4b7dd29-feeb-46c3-a12e-813599ad58ea%2FCover.png"
   },
   {
-    name: "Erlich Bachman",
-    url: "https://media.assettype.com/filmcompanion%2F2023-10%2Fc4b7dd29-feeb-46c3-a12e-813599ad58ea%2FCover.png"
+    name: "ryan gosling",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Ryan_Gosling_in_2018.jpg/640px-Ryan_Gosling_in_2018.jpg"
   },
   {
-    name: "Monica Hall",
-    url: "https://media.assettype.com/filmcompanion%2F2023-10%2Fc4b7dd29-feeb-46c3-a12e-813599ad58ea%2FCover.png"
+    name: "Brad pitt",
+    url: "https://goldenglobes.com/wp-content/uploads/2023/10/brad-pitt_03_paramount-pictures.jpg"
   },
   {
-    name: "Jared Dunn",
-    url: "https://media.assettype.com/filmcompanion%2F2023-10%2Fc4b7dd29-feeb-46c3-a12e-813599ad58ea%2FCover.png"
+    name: "Salman Khan",
+    url: "https://m.timesofindia.com/photo/97416861/97416861.jpg"
   },
   {
-    name: "Dinesh Chugtai",
+    name: "Hrithik Roshan",
     url: "https://media.assettype.com/filmcompanion%2F2023-10%2Fc4b7dd29-feeb-46c3-a12e-813599ad58ea%2FCover.png"
   }
 ]
