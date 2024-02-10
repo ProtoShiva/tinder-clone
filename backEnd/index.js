@@ -114,6 +114,20 @@ app.get("/user", async (req, res) => {
   }
 })
 
+app.put("/addmatch", async (req, res) => {
+  const { userId, matchedUserId } = req.body
+  try {
+    const query = { user_id: userId }
+    const updateDocument = {
+      $push: { matches: { user_id: matchedUserId } }
+    }
+    const user = await User.updateOne(query, updateDocument)
+    res.send(user)
+  } catch (error) {
+    console.log(error.message)
+  }
+})
+
 app.get("/gendered-users", async (req, res) => {
   const gender = req.query.gender
   console.log("gender", gender)
