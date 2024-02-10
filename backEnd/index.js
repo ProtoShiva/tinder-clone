@@ -41,9 +41,7 @@ app.post("/signup", async (req, res) => {
       expiresIn: 60 * 24
     })
 
-    res
-      .status(201)
-      .json({ token, userId: generateUserId, email: sanitizedEmail })
+    res.status(201).json({ token, userId: generateUserId })
   } catch (error) {
     console.log(error.message)
   }
@@ -73,6 +71,34 @@ app.post("/login", async (req, res) => {
     // res.status(400).json("Invalid Credentials")
   } catch (err) {
     console.log(err)
+  }
+})
+
+//updating the info
+
+app.put("/user", async (req, res) => {
+  const formData = req.body.formData
+
+  try {
+    const query = { user_id: formData.user_id }
+    const updateDocument = {
+      $set: {
+        first_name: formData.first_name,
+        dob_day: formData.dob_day,
+        dob_month: formData.dob_month,
+        dob_year: formData.dob_year,
+        show_gender: formData.show_gender,
+        gender_identity: formData.gender_identity,
+        gender_interest: formData.gender_interest,
+        url: formData.url,
+        about: formData.about,
+        matches: formData.matches
+      }
+    }
+    const insertedUser = await User.updateOne(query, updateDocument)
+    res.send(insertedUser)
+  } catch (error) {
+    console.log(error)
   }
 })
 
