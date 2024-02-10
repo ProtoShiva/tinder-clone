@@ -3,12 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useCookies } from "react-cookie"
 
 const AuthModal = ({ setShowModal, isSignUp }) => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [confirmPassword, setConfirmPassword] = useState(null)
   const [error, setError] = useState(null)
+  const [cookies, setCookie, removeCookie] = useCookies(["user"])
   let navigate = useNavigate()
   const handleClick = () => {
     setShowModal(false)
@@ -24,6 +26,10 @@ const AuthModal = ({ setShowModal, isSignUp }) => {
         email,
         password
       })
+
+      setCookie("Email", response.data.email)
+      setCookie("UserId", response.data.userId)
+      setCookie("AuthToken", response.data.token)
 
       const success = response.status === 201
       if (success) {
