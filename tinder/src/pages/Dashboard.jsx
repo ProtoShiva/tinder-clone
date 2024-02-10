@@ -1,7 +1,9 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import TinderCard from "react-tinder-card"
 import ChatContainer from "../components/ChatContainer"
+import axios from "axios"
+import { useCookies } from "react-cookie"
 
 const db = [
   {
@@ -27,6 +29,40 @@ const db = [
 ]
 
 function Dashboard() {
+  const [user, setUser] = useState(null)
+  const [genderedUsers, setGenderedUsers] = useState(null)
+  const [cookies, setCookie, removeCookie] = useCookies(["user"])
+  const userId = cookies.UserId
+  const getUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/user", {
+        params: { userId }
+      })
+      setUser(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getGenderUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/gendered-users", {
+        param: { gender: user?.gender_interest }
+      })
+      setGenderedUsers(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+    getGenderUsers()
+  }, [])
+
+  // console.log("user", user)
+  // console.log("gendered Users", genderedUsers)
+
   const characters = db
   const [lastDirection, setLastDirection] = useState()
 
@@ -40,31 +76,35 @@ function Dashboard() {
   }
 
   return (
-    <div className="dashboard">
-      <ChatContainer />
-      <div className="swiper-container">
-        <div className="card-container">
-          {characters.map((character) => (
-            <TinderCard
-              className="swipe"
-              key={character.name}
-              onSwipe={(dir) => swiped(dir, character.name)}
-              onCardLeftScreen={() => outOfFrame(character.name)}
-            >
-              <div
-                style={{ backgroundImage: "url(" + character.url + ")" }}
-                className="card"
-              >
-                <h3>{character.name}</h3>
+    <>
+      {user && (
+        <div className="dashboard">
+          <ChatContainer user={user} />
+          <div className="swiper-container">
+            <div className="card-container">
+              {characters.map((character) => (
+                <TinderCard
+                  className="swipe"
+                  key={character.name}
+                  onSwipe={(dir) => swiped(dir, character.name)}
+                  onCardLeftScreen={() => outOfFrame(character.name)}
+                >
+                  <div
+                    style={{ backgroundImage: "url(" + character.url + ")" }}
+                    className="card"
+                  >
+                    <h3>{character.name}</h3>
+                  </div>
+                </TinderCard>
+              ))}
+              <div className="swipe-info">
+                {lastDirection ? <p>You swiped {lastDirection}</p> : <p></p>}
               </div>
-            </TinderCard>
-          ))}
-          <div className="swipe-info">
-            {lastDirection ? <p>You swiped {lastDirection}</p> : <p></p>}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 

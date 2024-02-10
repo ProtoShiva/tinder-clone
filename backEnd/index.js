@@ -102,10 +102,27 @@ app.put("/user", async (req, res) => {
   }
 })
 
-app.get("/users", async (req, res) => {
+app.get("/user", async (req, res) => {
+  const userId = req.query.userId
+
   try {
-    const returnedUsers = await User.find({})
-    res.json(returnedUsers)
+    const query = { user_id: userId }
+    const user = await User.findOne(query)
+    res.send(user)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/gendered-users", async (req, res) => {
+  const gender = req.query.gender
+  console.log("gender", gender)
+
+  try {
+    const query = { gender_identity: { $eq: gender } }
+    const foundUsers = await User.find(query)
+
+    res.json(foundUsers)
   } catch (error) {
     console.log(error.message)
   }
