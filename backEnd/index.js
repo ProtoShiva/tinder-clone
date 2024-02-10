@@ -49,6 +49,33 @@ app.post("/signup", async (req, res) => {
   }
 })
 
+// Log in to the Database
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body
+
+  try {
+    const user = await User.findOne({ email })
+
+    const correctPassword = await bcrypt.compare(password, user.hashed_password)
+    const newData = {
+      user_id: user.user_id,
+      email: user.email,
+      hashed_password: user.hashed_password
+    }
+
+    if (user && correctPassword) {
+      const token = jwt.sign(newData, email, {
+        expiresIn: 60 * 24
+      })
+      res.status(201).json({ token, userId: user.user_id })
+    }
+
+    // res.status(400).json("Invalid Credentials")
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 app.get("/users", async (req, res) => {
   try {
     const returnedUsers = await User.find({})
